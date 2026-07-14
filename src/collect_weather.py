@@ -37,16 +37,23 @@ def fetch_weather() -> dict[str, Any]:
 
 
 def main() -> None:
-    weather_data = fetch_weather()
-    current = weather_data["current"]
+    try:
+        weather_data = fetch_weather()
+        current = weather_data["current"]
 
-    print(f"Location: {LOCATION_NAME}")
-    print(f"Temperature: {current['temperature_2m']}°C")
-    print(f"Humidity: {current['relative_humidity_2m']}%")
-    print(f"Feels like: {current['apparent_temperature']}°C")
-    print(f"Precipitation: {current['precipitation']} mm")
-    print(f"Wind speed: {current['wind_speed_10m']} km/h")
-    print(f"Weather code: {current['weather_code']}")
+        print(f"Location: {LOCATION_NAME}")
+        print(f"Temperature: {current['temperature_2m']}°C")
+        print(f"Humidity: {current['relative_humidity_2m']}%")
+        print(f"Feels like: {current['apparent_temperature']}°C")
+        print(f"Precipitation: {current['precipitation']} mm")
+        print(f"Wind speed: {current['wind_speed_10m']} km/h")
+        print(f"Weather code: {current['weather_code']}")
+
+    except requests.RequestException as error:
+        print(f"Unable to fetch weather data: {error}")
+
+    except KeyError as error:
+        print(f"Unexpected API response. Missing field: {error}")
 
 
 if __name__ == "__main__":
