@@ -41,6 +41,32 @@ def fetch_weather() -> dict[str, Any]:
     return response.json()
 
 
+def already_collected_today() -> bool:
+    if not DATA_FILE.exists():
+        return False
+
+    today = datetime.now().date()
+
+    with DATA_FILE.open("r", newline="", encoding="utf-8") as csv_file:
+        reader = csv.DictReader(csv_file)
+
+        for row in reader:
+            collected_at = row.get("collected_at")
+
+            if not collected_at:
+                continue
+
+            try:
+                collected_date = datetime.fromisoformat(collected_at).date()
+            except ValueError:
+                continue
+
+            if collected_date == today:
+                return True
+
+    return False
+
+
 def save_weather(current: dict[str, Any]) -> None:
     DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
 
@@ -70,6 +96,10 @@ def save_weather(current: dict[str, Any]) -> None:
 
 
 def main() -> None:
+    if already_collected_today():
+        print("Weather has already been collected today.")
+        return
+
     try:
         weather_data = fetch_weather()
         current = weather_data["current"]
@@ -92,3 +122,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

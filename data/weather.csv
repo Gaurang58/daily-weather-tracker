@@ -1,1 +1,2 @@
-2026-07-14T13:04:52,London,26.3,46,26.9,0.0,13.0,1
+collected_at,location,temperature_c,humidity_percent,apparent_temperature_c,precipitation_mm,wind_speed_kmh,weather_code
+2026-07-14T13:14:20,London,26.3,46,26.9,0.0,13.0,1
